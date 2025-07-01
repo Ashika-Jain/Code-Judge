@@ -60,4 +60,4 @@ async function deleteFile(filePath) {
     }
 }
 
-module.exports = executeCPP;
+module.exports = { executeCpp: executeCPP };

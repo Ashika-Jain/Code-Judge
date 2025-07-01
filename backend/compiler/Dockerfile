@@ -1,25 +1,31 @@
 FROM node:18
 
-# Install compilers and Python
-RUN apt-get update && apt-get install -y g++ python3
+# Install system dependencies for code compilation
+RUN apt-get update && \
+    apt-get install -y \
+        g++ \
+        default-jdk \
+        python3 \
+        python3-pip \
+    && rm -rf /var/lib/apt/lists/*
 
-# Create and set working directory
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# Copy package.json only
-COPY compiler/package.json ./
+# Copy package files
+COPY package*.json ./
 
-# Install dependencies
-RUN npm install --verbose
+# Install Node.js dependencies
+RUN npm install
 
-# Copy the compiler source code
-COPY compiler/. .
+# Copy application code
+COPY . .
 
-# Copy the CC folder (this works because you're building from backend/)
-COPY CC ./CC
+# Create necessary directories for code execution
+RUN mkdir -p uploads CC/codes CC/inputs CC/outputs
 
-# Expose the server port
+# Expose port
 EXPOSE 5001
 
-# Run the server
+# Start the application
 CMD ["node", "server.js"]

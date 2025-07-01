@@ -1,0 +1,14 @@
+services:
+  compiler-service:
+    build: .
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+    volumes:
+      - ./uploads:/app/uploads
+      - ./CC/codes:/app/CC/codes
+      - ./CC/inputs:/app/CC/inputs
+      - ./CC/outputs:/app/CC/outputs
+    restart: unless-stopped 
